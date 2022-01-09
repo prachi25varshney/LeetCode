@@ -1,30 +1,21 @@
 class Solution {
     public boolean isRobotBounded(String instructions) {
-        int x=0, y=0, dir=1;
-        for(int i=0;i<4;i++){
-            for(char ch: instructions.toCharArray()){
-                if(dir==1){
-                    if(ch=='G') y++;
-                    else if(ch=='L') dir =2;
-                    else dir =4;
-                }
-                else if(dir==2){
-                    if(ch=='G') x--;
-                    else if(ch=='L') dir =3;
-                    else dir =1;
-                }
-                else if(dir==3){
-                    if(ch=='G') y--;
-                    else if(ch=='L') dir =4;
-                    else dir =2;
-                }
-                else{
-                    if(ch=='G') x++;
-                    else if(ch=='L') dir =1;
-                    else dir =3;
-                }
+         int x = 0, y = 0, dir = 0;
+        // north = 0, east = 1, south = 2, west = 3
+        int[][] directions = new int[][] {{0,1}, {1,0}, {0, -1}, {-1,0}};
+        
+        for (char c : instructions.toCharArray()) {
+            if (c == 'L') {
+                dir = (dir + 3) % 4;
+            }
+            else if (c == 'R') {
+                dir = (dir + 1) % 4;
+            } else {
+                x += directions[dir][0];
+                y += directions[dir][1];
             }
         }
-        return x==0 && y==0;
+        
+        return (x == 0 && y == 0) || dir != 0;
     }
 }
