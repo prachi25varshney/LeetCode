@@ -1,15 +1,24 @@
 class Solution {
     public String addBinary(String a, String b) {
-        char[] ca= a.toCharArray(), cb= b.toCharArray();
-	StringBuilder out= new StringBuilder();
-	int carry= 0; 
-	for(int ia= ca.length-1, ib= cb.length-1; ia>-1 || ib>-1; ia--,ib--){
-		int sum= (ia<0 ? 0 : ca[ia]&1) + (ib<0 ? 0 : cb[ib]&1) + carry;
-		carry= sum>>1;
-		out.append(sum&1);
-	}
-	if(carry>0) out.append(1);
-	return out.reverse().toString();
+       int alen = a.length()-1;
+        int blen = b.length()-1;
+        int carry=0;
+        StringBuilder sb = new StringBuilder();
+        while(alen>=0 || blen>=0) {
+            int sum = carry;
+            if(alen>=0) {
+                sum+=(a.charAt(alen--)-'0');
+            }
+            if(blen>=0) {
+                sum+=(b.charAt(blen--)-'0');
+            }
+            sb.insert(0, sum%2);
+            carry=sum>>1;
+        }
+        if(carry==1) {
+            sb.insert(0,1);
+        }
+        return sb.toString();
         
     }
 }
