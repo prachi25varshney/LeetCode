@@ -1,33 +1,47 @@
 class Solution {
     public int minJumps(int[] arr) {
-        HashMap<Integer, List<Integer>> graph = new HashMap();
-        int n = arr.length;
-        for(int i=0;i<n;i++){
-            graph.computeIfAbsent(arr[i], v -> new ArrayList<>()).add(i);
+        if (arr == null || arr.length == 0) {
+            return 0;
         }
-        Queue<Integer> queue = new LinkedList();
-        HashSet<Integer> visited = new HashSet();
-        int jumps = 0;
-        queue.add(0);
-        visited.add(0);
-        while(!queue.isEmpty()){
-            int size = queue.size();
-            while(size-- > 0){
-                int index = queue.poll();
-                if(index == n-1)
-                    return jumps;
-                List<Integer> paths = graph.get(arr[index]);
-                paths.add(index-1);
-                paths.add(index+1);
-                for(int j : paths){
-                    if(j>=0 && j<n && !visited.contains(j)){
-                        queue.add(j);
-                        visited.add(j);
+        Map<Integer, List<Integer>> graph = new HashMap();//element, -> all indices the element has appeared 
+        for (int i = 0; i < arr.length; i++) {
+            graph.computeIfAbsent(arr[i], v -> new ArrayList()).add(i);
+        }
+        boolean[] visited = new boolean[arr.length];
+        Queue<Integer> que = new LinkedList();
+        que.offer(0);
+        visited[0] = true;
+        
+        int steps = 0;
+        while (!que.isEmpty()) {
+            int size = que.size();
+            while (size-- > 0) {
+                int curIdx = que.poll();
+                if (curIdx == arr.length - 1) {
+                    return steps;
+                }
+                int leftIdx = curIdx - 1;
+                if (leftIdx >= 0 && !visited[leftIdx]) {
+                    que.offer(leftIdx);
+                    visited[leftIdx] = true;
+                }
+                int rightIdx = curIdx + 1;
+                if (rightIdx < arr.length && !visited[rightIdx]) {
+                    que.offer(rightIdx);
+                    visited[rightIdx] = true; 
+                }
+                if (graph.get(arr[curIdx]) != null) {
+                    List<Integer> neighbors = graph.get(arr[curIdx]);
+                    for (int nextIdx : neighbors) {
+                        if (!visited[nextIdx] && curIdx != nextIdx) {
+                            que.offer(nextIdx);
+                            visited[nextIdx] = true;
+                        }
                     }
                 }
-                paths.clear();
+                graph.remove(arr[curIdx]);
             }
-            jumps++;
+            steps++;
         }
         return -1;
     }
