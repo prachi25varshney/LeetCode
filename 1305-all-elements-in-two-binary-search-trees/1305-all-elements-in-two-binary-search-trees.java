@@ -14,21 +14,31 @@
  * }
  */
 class Solution {
-    PriorityQueue<Integer> pq = new PriorityQueue<>();
     public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
-        traverseTree(root1);
-        traverseTree(root2);
         List<Integer> allElements = new ArrayList<>();
-        while(!pq.isEmpty()){
-            allElements.add(pq.poll());
+        Stack<TreeNode> st1 = new Stack<>();
+        Stack<TreeNode> st2 = new Stack<>();
+        
+        while(root1!=null || root2!=null || !st1.isEmpty() || !st2.isEmpty()){
+            while(root1!=null){
+                st1.add(root1);
+                root1= root1.left;
+            }
+            while(root2!=null){
+                st2.add(root2);
+                root2= root2.left;
+            }
+            if(st2.isEmpty() || !st1.isEmpty() && st1.peek().val<=st2.peek().val){
+                root1 = st1.pop();
+                allElements.add(root1.val);
+                root1= root1.right;
+            }
+            else{
+                root2 = st2.pop();
+                allElements.add(root2.val);
+                root2= root2.right;
+            }
         }
         return allElements;
-    }
-    public void traverseTree(TreeNode root){
-        if(root==null)
-            return;
-        pq.add(root.val);
-        traverseTree(root.left);
-        traverseTree(root.right);
     }
 }
