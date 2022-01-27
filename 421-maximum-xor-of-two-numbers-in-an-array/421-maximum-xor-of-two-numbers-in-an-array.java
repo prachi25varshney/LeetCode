@@ -1,20 +1,24 @@
 class Solution {
     public int findMaximumXOR(int[] nums) {
-        int mask=0,ans=0,temp=0;
-        HashSet<Integer>set=new HashSet();
-        for(int i=31;i>-1;i--)
-        {
-            mask|=(1<<i);
-            for(int a:nums)
-                set.add(a&mask);
-            temp=ans|(1<<i);
-            for(int a:set)
-                if(set.contains(a^temp))
-                {ans=temp;
-                 break; 
-                }
+        int max=0,mask=0;
+        HashSet<Integer> set=new HashSet<Integer>();
+        int maxNum=0;
+        for(int i:nums)
+            maxNum=Math.max(maxNum,i);
+        for(int i=31-Integer.numberOfLeadingZeros(maxNum);i>=0;i--){
             set.clear();
+            int bit=1<<i;
+            mask=mask|bit;
+            int temp=max|bit;
+            for(int prefix:nums){
+                if(set.contains((prefix & mask)^temp))
+                { 
+                    max=temp;
+                    break;
+                }
+                set.add(prefix & mask);
+            }
         }
-     return ans;
+        return max;
     }
 }
