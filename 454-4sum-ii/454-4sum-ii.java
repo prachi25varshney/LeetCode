@@ -10,9 +10,7 @@ class Solution {
         }
         for(int i : nums3){
             for(int j : nums4){
-                int sum = -(i+j);
-                if(hashMap.containsKey(sum))
-                    fourSumCount+= hashMap.get(sum);
+                fourSumCount+= hashMap.getOrDefault(-(i+j),0);
             }
         }
         return fourSumCount;
