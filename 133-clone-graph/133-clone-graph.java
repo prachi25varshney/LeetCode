@@ -20,28 +20,31 @@ class Node {
 
 class Solution {
     public Node cloneGraph(Node node) {
-        if(node == null)
-            return null;
-        HashMap<Node, Node> hashMap = new HashMap<>();
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(node);
-        hashMap.put(node,new Node(node.val));
-        while(!queue.isEmpty()){
-            Node temp = queue.poll();
-            Node cloneNode = hashMap.get(temp);
-            if(temp!= null && temp.neighbors!= null){
-                List<Node> tempNeighbors = temp.neighbors;
-                for(Node neighbor : tempNeighbors){
-                    Node cloneNeighbor =  hashMap.get(neighbor);
-                    if(cloneNeighbor == null){
-                        queue.add(neighbor);
-                        cloneNeighbor = new Node(neighbor.val);
-                        hashMap.put(neighbor,cloneNeighbor);
-                    }
-                    cloneNode.neighbors.add(cloneNeighbor);
+        if (node == null)
+            return node;
+        Map<Node, Node> map = new HashMap<>();
+        map.put(node, new Node(node.val));
+        Set<Node> visited = new HashSet<>();
+        Queue<Node> q = new LinkedList<>();
+        q.offer(node);
+        while(!q.isEmpty()) {
+            Node cur = q.poll();
+            Node newNode = map.get(cur);
+            map.put(cur, newNode);
+            List<Node> neighbors = new ArrayList<>();
+            visited.add(cur);
+            for(Node tmp : cur.neighbors) {
+                if (!map.containsKey(tmp)) {
+                    map.put(tmp, new Node(tmp.val));
+                }
+                neighbors.add(map.get(tmp));
+                
+                if(!visited.contains(tmp)) {
+                    q.offer(tmp);
                 }
             }
+            newNode.neighbors = neighbors;
         }
-        return hashMap.get(node);
+        return map.get(node);
     }
 }
