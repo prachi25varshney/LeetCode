@@ -15,14 +15,14 @@
  */
 class Solution {
     public int widthOfBinaryTree(TreeNode root) {
-        var q = new ArrayDeque<>(List.of(new Pair(root, 0)));
-        var maxWidth = 1;
+        Queue<Pair> q = new ArrayDeque<>(List.of(new Pair(root, 0)));
+        int maxWidth = 1;
 
         while (!q.isEmpty()) {
-            var head = q.peek();
-            var tail = head;
+            Pair head = q.peek();
+            Pair tail = head;
 
-            for (var i = q.size(); i > 0; i--) {
+            for (int i = q.size(); i > 0; i--) {
                 tail = q.poll();
                 if (tail.node.left != null)
                     q.add(new Pair(tail.node.left, 2 * tail.pos));
