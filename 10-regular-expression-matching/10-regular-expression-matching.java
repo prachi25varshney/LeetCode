@@ -1,35 +1,28 @@
-enum Result {
-    TRUE, FALSE
-}
-
 class Solution {
-    Result[][] memo;
-
-    public boolean isMatch(String text, String pattern) {
-        memo = new Result[text.length() + 1][pattern.length() + 1];
-        return dp(0, 0, text, pattern);
-    }
-
-    public boolean dp(int i, int j, String text, String pattern) {
-        if (memo[i][j] != null) {
-            return memo[i][j] == Result.TRUE;
+    public boolean isMatch(String s, String p) {
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+        
+        for(int i = 0; i<p.length(); i++) {
+            if(p.charAt(i) == '*' && dp[0][i - 1])
+                dp[0][i + 1] = true;
         }
-        boolean ans;
-        if (j == pattern.length()){
-            ans = i == text.length();
-        } else{
-            boolean first_match = (i < text.length() &&
-                                   (pattern.charAt(j) == text.charAt(i) ||
-                                    pattern.charAt(j) == '.'));
-
-            if (j + 1 < pattern.length() && pattern.charAt(j+1) == '*'){
-                ans = (dp(i, j+2, text, pattern) ||
-                       first_match && dp(i+1, j, text, pattern));
-            } else {
-                ans = first_match && dp(i+1, j+1, text, pattern);
+        
+        for(int i = 0; i<s.length(); i++) {
+            for(int j = 0; j<p.length(); j++) {
+                if(p.charAt(j) != '.' && p.charAt(j) != '*') {
+                    dp[i + 1][j + 1] = dp[i][j] && (p.charAt(j) == s.charAt(i));
+                } else if(p.charAt(j) == '.') {
+                    dp[i + 1][j + 1] = dp[i][j];
+                } else {
+                    dp[i + 1][j + 1] = dp[i + 1][j];
+                    if(j > 0)
+                        dp[i + 1][j + 1] = dp[i + 1][j + 1] 
+                        || dp[i + 1][j - 1]
+                        || (dp[i][j + 1] && (s.charAt(i) == p.charAt(j - 1) || p.charAt(j - 1) == '.'));
+                }
             }
         }
-        memo[i][j] = ans ? Result.TRUE : Result.FALSE;
-        return ans;
+        return dp[s.length()][p.length()];
     }
 }
