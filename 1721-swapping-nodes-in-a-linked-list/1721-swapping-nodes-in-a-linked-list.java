@@ -9,18 +9,44 @@
  * }
  */
 class Solution {
+    
+    //Swapping the list-nodes without swapping its values
     public ListNode swapNodes(ListNode head, int k) {
-        ListNode fast = head, slow = head;
-        for(int i=0;i<k-1;i++)
-            fast = fast.next;
-        ListNode temp = fast;
-        while(fast.next!=null){
-            fast= fast.next;
-            slow = slow.next;
+         ListNode dummyNode = new ListNode(0);
+        dummyNode.next = head;
+        ListNode preLeft = dummyNode;
+        ListNode left = head;
+        ListNode preRight = dummyNode;
+        ListNode right = head;
+
+        for (int i = 1; i < k; i++) {
+            preLeft = preLeft.next;
+            left = left.next;
         }
-        int swap = slow.val;
-        slow.val = temp.val;
-        temp.val = swap;
-        return head;
+
+        ListNode curNode = left;
+        while (curNode.next != null) {
+            curNode = curNode.next;
+            preRight = preRight.next;
+            right = right.next;
+        }
+
+        ListNode tempNode = left.next;
+        if (preLeft == right) {
+            preRight.next = left;
+            left.next = right;
+            right.next = tempNode;
+        } else if (left == preRight) {
+            left.next = right.next;
+            preLeft.next = right;
+            right.next = left;
+        } else {
+            preLeft.next = right;
+            left.next = right.next;
+            preRight.next = left;
+            right.next = tempNode;
+        }
+
+        return dummyNode.next;
     }
 }
