@@ -6,7 +6,7 @@ class Solution {
             if(mid>0 && mid< nums.length-1 && nums[mid]>nums[mid+1] && nums[mid]>nums[mid-1])
                 return mid;
             if (nums[mid] > nums[mid + 1])
-                r = mid;
+                r = mid -1;
             else
                 l = mid + 1;
         }
