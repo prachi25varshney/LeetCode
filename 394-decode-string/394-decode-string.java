@@ -1,26 +1,34 @@
 class Solution {
     public String decodeString(String s) {
-         String res = "";
-        Stack<Integer> nums = new Stack<Integer>();
-        Stack<String> strs = new Stack<String>();
-        int cnt = 0;
-        for (int i = 0; i < s.length(); ++i) {
-            if (s.charAt(i) >= '0' && s.charAt(i) <= '9') {
-                cnt = 10 * cnt + s.charAt(i) - '0';
-            } else if (s.charAt(i) == '[') {
-                nums.push(cnt);
-                strs.push(res);
-                cnt = 0; res = "";
-            } else if (s.charAt(i) == ']') {
-                int k = nums.pop();
-                String next = strs.pop();
-                for (int j = 0; j < k; ++j) 
-                    next += res;
-                res = next; 
-            } else {
-                res += s.charAt(i);
+         int N = s.length();
+        StringBuilder builder = new StringBuilder();
+        
+        for (int i = 0; i < N; i++) {
+            char ch = s.charAt(i);
+            if (Character.isDigit(ch)) {
+                int k = ch-'0';
+                while (i+1 < N && Character.isDigit(s.charAt(i+1)))
+                    k = k*10 + (s.charAt(++i)-'0');
+                
+                i++;
+                int left = i;
+                int balance = 0;
+                while (true) {
+                    if (s.charAt(i) == '[') balance++;
+                    if (s.charAt(i) == ']') balance--;
+                    if (balance == 0) break;
+                    i++;
+                }
+                
+                String decoded = decodeString(s.substring(left+1, i));
+
+                while (k-- > 0) 
+                    builder.append(decoded);
             }
+            else
+                builder.append(ch);
         }
-        return res;
+        
+        return builder.toString();
     }
 }
