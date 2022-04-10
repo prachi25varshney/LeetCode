@@ -1,20 +1,27 @@
 class Solution {
     public int calPoints(String[] ops) {
-        List<Integer> scores = new ArrayList<>();
+        Stack<Integer> stack = new Stack<>();
         for(String op : ops){
-            int size = scores.size();
             if(op.equals("C"))
-                scores.remove(size-1);
-            else if(op.equals("D"))
-                scores.add(2 * scores.get(size -1));
-            else if(op.equals("+"))
-                scores.add(scores.get(size -1) + scores.get(size -2));
+               stack.pop();
+            else if(op.equals("D")){
+                int top = stack.pop();
+                int newTop = 2 *top;
+                stack.push(top);
+                stack.push(newTop);
+            }
+            else if(op.equals("+")){
+                int top = stack.pop();
+                int newTop = top + stack.peek();
+                stack.push(top);
+                stack.push(newTop);
+            }
             else
-                scores.add(Integer.parseInt(op));
+                stack.push(Integer.parseInt(op));
         }
         int totalScore =0;
-        for(int score : scores)
-            totalScore+= score;
+        while(!stack.isEmpty())
+            totalScore+= stack.pop();
         return totalScore;
     }
 }
