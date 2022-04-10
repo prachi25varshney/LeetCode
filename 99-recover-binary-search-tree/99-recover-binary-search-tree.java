@@ -28,9 +28,13 @@ class Solution {
             return;
         recoverBSTUtil(root.left);
         if(prev!=null && prev.val>root.val){
-            if(firstNode==null)
+            if(firstNode==null){
                 firstNode=prev;
-            secondNode = root;
+                secondNode = root;
+            }
+            else{
+                 secondNode = secondNode.val<root.val?secondNode:root;
+            }
         }
         prev = root;
         recoverBSTUtil(root.right);
