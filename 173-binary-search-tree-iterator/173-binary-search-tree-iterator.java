@@ -14,31 +14,31 @@
  * }
  */
 class BSTIterator {
-    List<Integer> bst;
+    Stack<TreeNode> stack;
+    TreeNode root, curr;
     int index;
     public BSTIterator(TreeNode root) {
-        this.bst = new ArrayList<>();
-        this.index =0;
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode curr = root;
-        while(curr!=null || !stack.isEmpty()){
-            while(curr!=null){
-                stack.push(curr);
-                curr = curr.left;
-            }
-            curr = stack.pop();
-            bst.add(curr.val);
-            curr = curr.right;
-        }
+        this.index =-1;
+        this.stack = new Stack<>();
+        this.root =root;
+        this.curr = root;
         
     }
     
     public int next() {
-        return bst.get(index++);
+         while(curr!=null){
+                stack.push(curr);
+                curr = curr.left;
+             index++;
+            }
+            TreeNode temp = stack.pop();
+            curr = temp.right;
+        index --;
+        return temp.val;
     }
     
     public boolean hasNext() {
-        return index!=bst.size();
+        return curr!=null||index!=-1;
     }
 }
 
