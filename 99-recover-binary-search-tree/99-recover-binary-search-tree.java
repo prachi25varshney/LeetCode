@@ -14,29 +14,26 @@
  * }
  */
 class Solution {
-    TreeNode prev = null, firstNode = null, secondNode = null;
+    TreeNode prev = null, first = null, second =null;
     public void recoverTree(TreeNode root) {
-        recoverBSTUtil(root);
-        if(firstNode!=null && secondNode!=null){
-            int temp = firstNode.val;
-            firstNode.val = secondNode.val;
-            secondNode.val = temp;
+        recoverTreeUtil(root);
+        if(first!=null && second!=null){
+            int temp = first.val;
+            first.val = second.val;
+            second.val = temp;
         }
+        
     }
-    public void recoverBSTUtil(TreeNode root){
-        if(root==null)
+    private void recoverTreeUtil(TreeNode root){
+        if(root == null)
             return;
-        recoverBSTUtil(root.left);
-        if(prev!=null && prev.val>root.val){
-            if(firstNode==null){
-                firstNode=prev;
-                secondNode = root;
+        recoverTreeUtil(root.left);
+            if(prev!=null && root.val<prev.val){
+                if(first==null)
+                    first = prev;
+                second = root;
             }
-            else{
-                 secondNode = secondNode.val<root.val?secondNode:root;
-            }
-        }
         prev = root;
-        recoverBSTUtil(root.right);
+        recoverTreeUtil(root.right);
     }
 }
