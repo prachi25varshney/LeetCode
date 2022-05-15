@@ -14,25 +14,28 @@
  * }
  */
 class Solution {
-    HashMap<Integer, List<Integer>> levelList = new HashMap();
-    int maxLevel =0;
+    int sum=0;
     public int deepestLeavesSum(TreeNode root) {
-        getLevelsList(root,0);
-        int deepestLeavesSum =0;
-        for(int val : levelList.get(maxLevel)){
-            deepestLeavesSum+=val;
-        }
-        return deepestLeavesSum;
+        int length = depthOfTree(root);
+        return deepestLeaf(root,length);
     }
-    private void getLevelsList(TreeNode root, int level){
-        if(root==null)
-            return;
-        if(!levelList.containsKey(level))
-            levelList.put(level,new ArrayList());
-        levelList.get(level).add(root.val);
-        maxLevel = Math.max(maxLevel,level);
-        getLevelsList(root.left, level+1);
-        getLevelsList(root.right,level+1);
-        
+
+    public int depthOfTree(TreeNode node){
+        if(node==null)
+            return 0;
+        if(node.left== null && node.right==null)
+            return 1;
+        return 1 + Math.max(depthOfTree(node.left),depthOfTree(node.right));
+    }
+    public int deepestLeaf(TreeNode node,int length){
+        if(node==null)
+            return 0;
+        if(length==1)
+            sum = sum + node.val;
+        if(node.left!=null)
+            deepestLeaf(node.left,length-1);
+        if(node.right!=null)
+            deepestLeaf(node.right,length-1);
+        return sum;
     }
 }
