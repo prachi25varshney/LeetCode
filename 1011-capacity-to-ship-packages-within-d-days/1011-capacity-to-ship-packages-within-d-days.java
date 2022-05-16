@@ -16,7 +16,7 @@ class Solution {
             }else
                 low = mid +1;
         }
-        return capacity;
+        return low;
     }
     private boolean isPossible(int[] weights, int d, int minCapacity){
         int totalWeight =0;
