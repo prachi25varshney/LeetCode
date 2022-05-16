@@ -7,11 +7,9 @@ class Solution {
         }
         if(days == 1)
             return high;
-        int capacity =0;
         while(low < high){
             int mid = low + (high -low)/2;
             if(isPossible(weights,days, mid)){
-                capacity = mid;
                 high = mid;
             }else
                 low = mid +1;
