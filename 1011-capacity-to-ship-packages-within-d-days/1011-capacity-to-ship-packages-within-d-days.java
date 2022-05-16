@@ -5,8 +5,7 @@ class Solution {
             low = Math.max(low,weight);
             high+=weight;
         }
-        if(days == 1)
-            return high;
+
         while(low < high){
             int mid = low + (high -low)/2;
             if(isPossible(weights,days, mid)){
