@@ -11,14 +11,14 @@
  */
 public class Solution {
     public boolean hasCycle(ListNode head) {
-        HashSet<ListNode> hashMap = new HashSet<>();
-        while(head!=null){
-            if(!hashMap.contains(head))
-                hashMap.add(head);
-                
-            else
+        if(head == null)
+            return false;
+        ListNode slow = head, fast = head;
+        while(fast.next!=null && fast.next.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast)
                 return true;
-            head = head.next;
         }
         return false;
     }
