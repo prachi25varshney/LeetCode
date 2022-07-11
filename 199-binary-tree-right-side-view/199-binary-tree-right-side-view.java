@@ -14,22 +14,21 @@
  * }
  */
 class Solution {
-    List<Integer> list;
-    int max_level =-1;
-    public List<Integer> rightSideView(TreeNode root) { 
-        this.list  = new ArrayList<>();
-        rightSideUtil(root,0);
-        return list;
+    List<Integer> ans = new ArrayList();
+    int level =-1;
+    public List<Integer> rightSideView(TreeNode root) {
+        rightSideViewUtil(root, 0);
+        return ans;
     }
     
-    public void rightSideUtil(TreeNode node, int curr_level){
-        if(node!=null){
-            if(curr_level> max_level){
-                 list.add(node.val);
-                max_level = curr_level;
-            }
-            rightSideUtil(node.right,curr_level+1);
-            rightSideUtil(node.left,curr_level+1);
+    private void rightSideViewUtil(TreeNode root, int currLevel){
+        if(root == null)
+            return;
+        if(currLevel> level){
+            level = currLevel;
+            ans.add(root.val);
         }
+        rightSideViewUtil(root.right, currLevel+1);
+        rightSideViewUtil(root.left, currLevel+1);
     }
 }
