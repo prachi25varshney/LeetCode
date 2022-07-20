@@ -1,27 +1,39 @@
 class Solution {
     
-    void add(HashMap<Character,Queue<String>> map, String word){
-        if(word.length()==0) return;
-        Queue<String> q; char ch = word.charAt(0);
-        q = map.getOrDefault(ch,new LinkedList<String>());
-        q.add(word);
-        map.put(ch,q);
+    public int numMatchingSubseq(String s, String[] words) {
+        int num = 0;
+        HashSet<String> isSub = new HashSet<>();
+        HashSet<String> notSub = new HashSet<>();
+        for(String word: words) {
+            if( notSub.contains(word)) continue;
+            if(isSub.contains(word)) {
+                num++;
+                continue;
+            }
+            if(isSubSequence(s, word)) {
+                num++;
+                isSub.add(word);
+            } else notSub.add(word);
+            
+        }
+        
+        return num;
     }
     
-    public int numMatchingSubseq(String s, String[] words) {
-        HashMap<Character,Queue<String>> map = new HashMap<Character,Queue<String>>();
-        int i,j,res=0,len=s.length(),n=words.length,size;
-        for(i=0;i<n;i++)
-            add(map,words[i]);
-        for(i=0;i<len;i++){
-            Queue<String> q = map.getOrDefault(s.charAt(i),new LinkedList<String>());
-            size=q.size();
-            while(size-->0){
-                String word=q.remove().substring(1);
-                res+=word.length()==0?1:0;
-                add(map,word);
+    private boolean isSubSequence(String s, String word) {
+        if(word.isEmpty()) return true;
+        
+        int j = 0;
+        int found = 0;
+        for(int i = 0; i < s.length(); i++) {
+            if(found == word.length()) return true;
+            
+            if(s.charAt(i) == word.charAt(j)) {
+                j++;
+                found++;
             }
         }
-        return res;
+        
+        return found == word.length();
     }
 }
