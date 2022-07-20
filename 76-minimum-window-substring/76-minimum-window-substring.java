@@ -41,8 +41,6 @@ class Solution {
             str = s.substring(left,right);
             min = right-left+1;
         }
-        System.out.println(tMap+ "\n\n");
-        System.out.println(sMap);
         return str;
     }
 }
